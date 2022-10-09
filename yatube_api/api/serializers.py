@@ -1,6 +1,5 @@
+from posts.models import Comment, Follow, Group, Post, User
 from rest_framework import serializers
-
-from posts.models import Post, Group, Comment, User, Follow
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -53,11 +52,11 @@ class FollowSerializer(serializers.ModelSerializer):
         return data
 
     class Meta:
-        fields = '__all__'
+        fields = ('user', 'following')
         model = Follow
-        validators = [
+        validators = (
             serializers.UniqueTogetherValidator(
                 queryset=Follow.objects.order_by('following'),
                 fields=('user', 'following')
-            )
-        ]
+            ),
+        )
